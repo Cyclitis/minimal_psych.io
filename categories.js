@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const difficultyCheckboxes = document.querySelectorAll('input[name="difficulty"]');
+    const timedModeCheckbox = document.getElementById('timed-mode');
     const categoryCards = document.querySelectorAll('.category-card');
 
     categoryCards.forEach(card => {
@@ -11,8 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 .filter(checkbox => checkbox.checked)
                 .map(checkbox => checkbox.value);
             
-            // Redirect to the quiz page with category and difficulties
-            window.location.href = `quiz.html?category=${category}&difficulties=${selectedDifficulties.join(',')}`;
+            // Get timed mode setting
+            const timedMode = timedModeCheckbox.checked;
+            
+            // Redirect to the quiz page with category, difficulties, and timed mode
+            window.location.href = `quiz.html?category=${category}&difficulties=${selectedDifficulties.join(',')}&timed=${timedMode}`;
         });
     });
 });

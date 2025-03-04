@@ -21,6 +21,17 @@ const QUESTIONS = {
             ],
             explanation: "Bipolar I Disorder is defined by the occurrence of at least one manic episode, which may be preceded or followed by hypomanic or major depressive episodes.",
             difficulty: "hard"
+        },
+        {
+            question: "Which neurotransmitter is most commonly associated with depression?",
+            options: [
+                { text: "Dopamine", correct: false },
+                { text: "Serotonin", correct: true },
+                { text: "Glutamate", correct: false },
+                { text: "GABA", correct: false }
+            ],
+            explanation: "Serotonin is a key neurotransmitter involved in mood regulation and is commonly targeted by antidepressant medications.",
+            difficulty: "easy"
         }
     ],
     'psychopharmacology': [
@@ -45,6 +56,17 @@ const QUESTIONS = {
             ],
             explanation: "Paroxetine is known to have the highest risk of weight gain among SSRIs due to its pharmacological properties.",
             difficulty: "medium"
+        },
+        {
+            question: "Which class of medications is primarily used to treat schizophrenia?",
+            options: [
+                { text: "Selective Serotonin Reuptake Inhibitors (SSRIs)", correct: false },
+                { text: "Atypical antipsychotics", correct: true },
+                { text: "Benzodiazepines", correct: false },
+                { text: "Tricyclic antidepressants", correct: false }
+            ],
+            explanation: "Atypical antipsychotics, such as risperidone and olanzapine, are commonly used to treat schizophrenia due to their efficacy and lower risk of extrapyramidal symptoms compared to typical antipsychotics.",
+            difficulty: "easy"
         }
     ],
     'schizophrenia': [
@@ -57,6 +79,17 @@ const QUESTIONS = {
                 { text: "Gustatory hallucinations", correct: false }
             ],
             explanation: "Auditory hallucinations, particularly hearing voices, are the most common type of hallucinations in Schizophrenia.",
+            difficulty: "medium"
+        },
+        {
+            question: "Which of the following is considered a negative symptom of schizophrenia?",
+            options: [
+                { text: "Hallucinations", correct: false },
+                { text: "Delusions", correct: false },
+                { text: "Avolition", correct: true },
+                { text: "Disorganized speech", correct: false }
+            ],
+            explanation: "Negative symptoms of schizophrenia include avolition (lack of motivation), anhedonia, and affective flattening, which significantly impact daily functioning.",
             difficulty: "medium"
         }
     ],

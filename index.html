@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Psychiatry Board Exam Prep</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,20 +17,28 @@
                 <h2>Choose a Category</h2>
                 
                 <div class="difficulty-selection">
-                    <h3>Select Difficulty Levels</h3>
-                    <div class="difficulty-filters">
-                        <label>
-                            <input type="checkbox" name="difficulty" value="easy" checked>
-                            <span class="difficulty-badge easy">Easy</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="difficulty" value="medium" checked>
-                            <span class="difficulty-badge medium">Medium</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" name="difficulty" value="hard" checked>
-                            <span class="difficulty-badge hard">Hard</span>
-                        </label>
+                    <h3>Quiz Settings</h3>
+                    <div class="quiz-settings">
+                        <div class="difficulty-filters">
+                            <label>
+                                <input type="checkbox" name="difficulty" value="easy" checked>
+                                <span class="difficulty-badge easy">Easy</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="difficulty" value="medium" checked>
+                                <span class="difficulty-badge medium">Medium</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="difficulty" value="hard" checked>
+                                <span class="difficulty-badge hard">Hard</span>
+                            </label>
+                        </div>
+                        <div class="timer-toggle">
+                            <label for="timed-mode">
+                                <input type="checkbox" id="timed-mode"> 
+                                <span>Timed Mode</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -109,7 +117,6 @@
             </div>
         </div>
     </div>
-
     <script src="categories.js"></script>
 </body>
 </html>

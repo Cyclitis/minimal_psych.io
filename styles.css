@@ -442,3 +442,24 @@ body {
     margin-bottom: 25px;
 }
 
+/* Quiz Settings Styles */
+.quiz-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Responsive adjustments for quiz settings */
+@media (max-width: 768px) {
+    .quiz-settings {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .difficulty-filters {
+        flex-wrap: wrap;
+    }
+}
+

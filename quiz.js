@@ -7,10 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 class PsychiatryQuestionBank {
     constructor() {
-        // Get category and difficulties from URL
+        // Get category, difficulties, and timed mode from URL
         const urlParams = new URLSearchParams(window.location.search);
         this.category = urlParams.get('category') || 'affective-disorders';
         const selectedDifficulties = urlParams.get('difficulties')?.split(',') || ['easy', 'medium', 'hard'];
+        this.timedMode = urlParams.get('timed') === 'true';
         
         // Set category title
         const categoryTitleMap = {
@@ -55,7 +56,6 @@ class PsychiatryQuestionBank {
         this.nextBtn = document.getElementById('next-btn');
         this.resetBtn = document.getElementById('reset-btn');
         this.timerEl = document.getElementById('timer');
-        this.timedModeCheckbox = document.getElementById('timed-mode');
 
         // Progress bar elements
         this.progressCorrectEl = document.querySelector('.progress-correct');
@@ -64,6 +64,11 @@ class PsychiatryQuestionBank {
         this.initEventListeners();
         this.filterQuestions();
         this.loadQuestion();
+        
+        // Initialize timer based on URL parameter
+        if (this.timedMode) {
+            this.startTimer();
+        }
     }
 
     filterQuestions() {
@@ -78,15 +83,6 @@ class PsychiatryQuestionBank {
     initEventListeners() {
         this.nextBtn.addEventListener('click', () => this.loadQuestion());
         this.resetBtn.addEventListener('click', () => this.resetQuiz());
-        this.timedModeCheckbox.addEventListener('change', () => this.toggleTimedMode());
-    }
-
-    toggleTimedMode() {
-        if (this.timedModeCheckbox.checked) {
-            this.startTimer();
-        } else {
-            this.stopTimer();
-        }
     }
 
     startTimer() {
@@ -132,7 +128,7 @@ class PsychiatryQuestionBank {
         this.stopTimer();
 
         // Start new timer if timed mode is on
-        if (this.timedModeCheckbox.checked) {
+        if (this.timedMode) {
             this.startTimer();
         }
 
