@@ -401,14 +401,16 @@ body {
 
 .difficulty-filters {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .difficulty-filters label {
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .difficulty-filters input[type="checkbox"] {
@@ -449,6 +451,27 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
+    width: 100%;
+}
+
+.difficulty-filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-filters label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.timer-toggle {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
 }
 
 /* Responsive adjustments for quiz settings */
@@ -456,10 +479,49 @@ body {
     .quiz-settings {
         flex-direction: column;
         align-items: flex-start;
+        gap: 15px;
     }
     
     .difficulty-filters {
         flex-wrap: wrap;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+    
+    .difficulty-badge {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+    
+    .timer-toggle {
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    .difficulty-selection {
+        padding: 15px;
+    }
+    
+    .difficulty-selection h3 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .difficulty-filters {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .difficulty-filters label {
+        width: 100%;
+    }
+    
+    .quiz-settings {
+        gap: 12px;
     }
 }
 
