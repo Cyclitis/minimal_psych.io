@@ -15,11 +15,11 @@ class PsychiatryQuestionBank {
         
         // Set category title
         const categoryTitleMap = {
-            'affective-disorders': 'Affective Disorders',
-            'psychopharmacology': 'Psychopharmacology',
-            'psychotherapy': 'Psychotherapy',
-            'schizophrenia': 'Schizophrenia & Psychotic Disorders',
-            'anxiety-disorders': 'Anxiety Disorders'
+            'affective-disorders': 'Affektive Störungen',
+            'psychopharmacology': 'Psychopharmakologie',
+            'psychotherapy': 'Psychotherapie',
+            'schizophrenia': 'Schizophrenie & Psychotische Störungen',
+            'anxiety-disorders': 'Angststörungen'
         };
         document.getElementById('category-title').textContent = categoryTitleMap[this.category];
 
@@ -91,17 +91,15 @@ class PsychiatryQuestionBank {
 
         // Set initial time
         let timeLeft = this.timerDuration;
-        this.timerEl.textContent = `Time left: ${timeLeft}s`;
+        this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
         this.timerEl.style.display = 'block';
 
         // Start countdown
         this.timerInterval = setInterval(() => {
             timeLeft--;
-            this.timerEl.textContent = `Time left: ${timeLeft}s`;
+            this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
 
-            // Time ran out
             if (timeLeft <= 0) {
-                this.stopTimer();
                 this.handleTimeOut();
             }
         }, 1000);
@@ -115,76 +113,65 @@ class PsychiatryQuestionBank {
     }
 
     handleTimeOut() {
-        // Simulate an incorrect answer when time runs out
-        this.feedbackEl.textContent = 'Time\'s up!';
-        this.feedbackEl.style.backgroundColor = '#f2dede';
+        this.stopTimer();
+        
+        // Mark all options as disabled
+        const optionElements = this.optionsEl.querySelectorAll('.option');
+        optionElements.forEach(option => {
+            option.style.pointerEvents = 'none';
+            option.style.opacity = '0.7';
+        });
+        
+        // Show feedback
+        this.feedbackEl.textContent = 'Zeit abgelaufen! Bitte versuchen Sie es mit der nächsten Frage.';
+        this.feedbackEl.style.color = '#e74c3c';
+        this.feedbackEl.style.display = 'block';
+        
+        // Update score
         this.incorrectQuestions++;
+        this.totalQuestions++;
         this.updateProgressBar();
-        this.loadQuestion();
+        this.scoreEl.textContent = `Punktzahl: ${this.score}/${this.totalQuestions}`;
     }
 
     loadQuestion() {
-        // Stop previous timer if exists
-        this.stopTimer();
-
-        // Start new timer if timed mode is on
-        if (this.timedMode) {
-            this.startTimer();
-        }
-
-        // Clear previous question state
+        // Clear previous state
+        this.feedbackEl.style.display = 'none';
+        this.explanationEl.style.display = 'none';
         this.optionsEl.innerHTML = '';
-        this.feedbackEl.innerHTML = '';
-        this.explanationEl.innerHTML = '';
-
-        // Remove any existing difficulty badge or skip button
-        const existingDifficultyBadge = this.questionEl.querySelector('.difficulty-badge');
-        if (existingDifficultyBadge) {
-            existingDifficultyBadge.remove();
-        }
-        const existingSkipBtn = document.querySelector('.skip-btn');
-        if (existingSkipBtn) {
-            existingSkipBtn.remove();
-        }
-
-        // If we've gone through all questions, restart
+        
+        // If we've gone through all questions, show completion message
         if (this.currentQuestionIndex >= this.questions.length) {
-            this.currentQuestionIndex = 0;
+            this.questionEl.textContent = 'Quiz abgeschlossen!';
+            this.optionsEl.innerHTML = `<p>Sie haben ${this.score} von ${this.totalQuestions} Fragen richtig beantwortet.</p>`;
+            this.nextBtn.style.display = 'none';
+            return;
         }
-
+        
+        // Get current question
         const currentQuestion = this.questions[this.currentQuestionIndex];
+        
+        // Display question
         this.questionEl.textContent = currentQuestion.question;
-
-        // Add difficulty badge to question
-        const difficultyBadge = document.createElement('span');
-        difficultyBadge.className = `difficulty-badge ${currentQuestion.difficulty}`;
-        difficultyBadge.textContent = currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1);
-        this.questionEl.appendChild(difficultyBadge);
-
-        // Shuffle options
-        const shuffledOptions = this.shuffleArray(currentQuestion.options);
-
-        // Create option buttons
-        shuffledOptions.forEach((option, index) => {
+        
+        // Create and display options
+        currentQuestion.options.forEach((option, index) => {
             const optionEl = document.createElement('div');
             optionEl.classList.add('option');
             optionEl.textContent = option.text;
+            
             optionEl.addEventListener('click', () => this.selectOption(optionEl, option));
+            
             this.optionsEl.appendChild(optionEl);
         });
-
-        // Add skip button
-        const skipBtn = document.createElement('button');
-        skipBtn.textContent = 'Skip Question';
-        skipBtn.className = 'btn btn-secondary skip-btn';
-        skipBtn.addEventListener('click', () => this.skipQuestion());
         
-        // Insert skip button
-        const controlsContainer = document.querySelector('.controls');
-        controlsContainer.insertBefore(skipBtn, controlsContainer.firstChild);
-
+        // Reset timer if in timed mode
+        if (this.timedMode) {
+            this.startTimer();
+        }
+        
+        // Move to next question for next time
         this.currentQuestionIndex++;
-        this.totalQuestions++;
     }
 
     skipQuestion() {
@@ -196,40 +183,60 @@ class PsychiatryQuestionBank {
     }
 
     selectOption(optionEl, option) {
-        // Stop timer if in timed mode
+        // Stop the timer
         this.stopTimer();
-
-        // Prevent multiple selections
-        if (this.optionsEl.querySelector('.correct, .incorrect')) return;
-
-        // Highlight selected option
+        
+        // Prevent selecting multiple options
+        const allOptions = this.optionsEl.querySelectorAll('.option');
+        allOptions.forEach(opt => {
+            opt.style.pointerEvents = 'none';
+            if (opt !== optionEl) {
+                opt.style.opacity = '0.7';
+            }
+        });
+        
+        // Mark selected option
         optionEl.classList.add('selected');
-
+        
         // Check if correct
         if (option.correct) {
+            optionEl.classList.add('correct');
+            this.feedbackEl.textContent = 'Richtig!';
+            this.feedbackEl.style.color = '#2ecc71';
             this.score++;
             this.correctQuestions++;
-            this.feedbackEl.textContent = 'Correct!';
-            this.feedbackEl.style.backgroundColor = '#dff0d8';
-            optionEl.classList.add('correct');
         } else {
-            this.incorrectQuestions++;
-            this.feedbackEl.textContent = 'Incorrect.';
-            this.feedbackEl.style.backgroundColor = '#f2dede';
             optionEl.classList.add('incorrect');
-
+            this.feedbackEl.textContent = 'Falsch!';
+            this.feedbackEl.style.color = '#e74c3c';
+            this.incorrectQuestions++;
+            
             // Highlight the correct answer
-            const correctOption = Array.from(this.optionsEl.children)
-                .find(el => this.questions[this.currentQuestionIndex - 1].options
-                    .find(opt => opt.correct && opt.text === el.textContent));
-            if (correctOption) correctOption.classList.add('correct');
+            allOptions.forEach(opt => {
+                const optionData = this.questions[this.currentQuestionIndex - 1].options[
+                    Array.from(allOptions).indexOf(opt)
+                ];
+                if (optionData && optionData.correct) {
+                    opt.classList.add('correct');
+                }
+            });
         }
-
-        // Show explanation
-        this.explanationEl.textContent = this.questions[this.currentQuestionIndex - 1].explanation;
-
-        // Update score and progress bar
-        this.scoreEl.textContent = `Score: ${this.score}/${this.totalQuestions}`;
+        
+        // Show feedback and explanation
+        this.feedbackEl.style.display = 'block';
+        
+        // Show explanation if available
+        const currentQuestion = this.questions[this.currentQuestionIndex - 1];
+        if (currentQuestion.explanation) {
+            this.explanationEl.textContent = `Erklärung: ${currentQuestion.explanation}`;
+            this.explanationEl.style.display = 'block';
+        }
+        
+        // Update total questions and score display
+        this.totalQuestions++;
+        this.scoreEl.textContent = `Punktzahl: ${this.score}/${this.totalQuestions}`;
+        
+        // Update progress bar
         this.updateProgressBar();
     }
 
@@ -243,15 +250,29 @@ class PsychiatryQuestionBank {
     }
 
     resetQuiz() {
+        // Reset quiz state
         this.currentQuestionIndex = 0;
         this.score = 0;
         this.totalQuestions = 0;
         this.correctQuestions = 0;
         this.incorrectQuestions = 0;
         this.skippedQuestions = [];
-        this.scoreEl.textContent = 'Score: 0/0';
+        
+        // Reset UI
+        this.scoreEl.textContent = 'Punktzahl: 0/0';
+        this.feedbackEl.style.display = 'none';
+        this.explanationEl.style.display = 'none';
+        this.nextBtn.style.display = 'block';
+        
+        // Reset progress bar
+        this.progressCorrectEl.style.width = '0%';
+        this.progressIncorrectEl.style.width = '0%';
+        
+        // Stop timer if running
         this.stopTimer();
-        this.updateProgressBar();
+        
+        // Reload questions
+        this.filterQuestions();
         this.loadQuestion();
     }
 
