@@ -38,6 +38,7 @@ body {
     max-width: 900px; /* Increased from 600px to 900px */
     padding: 35px;
     animation: fadeIn 0.5s ease-out;
+    overflow: hidden; /* Prevent content from overflowing */
 }
 
 @keyframes fadeIn {
@@ -296,8 +297,9 @@ body {
 
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Increased minimum width */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
+    width: 100%;
 }
 
 .category-card {
@@ -312,8 +314,9 @@ body {
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
-    min-height: 180px; /* Increased height */
-    min-width: 300px; /* Added minimum width */
+    min-height: 160px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .category-card::before {
@@ -476,6 +479,10 @@ body {
 
 /* Responsive adjustments for quiz settings */
 @media (max-width: 768px) {
+    .quiz-container {
+        padding: 25px;
+    }
+    
     .quiz-settings {
         flex-direction: column;
         align-items: flex-start;
@@ -507,6 +514,45 @@ body {
         font-size: 1rem;
         margin-bottom: 12px;
     }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-card {
+        min-height: 140px;
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    #category-selection h2 {
+        font-size: 1.5rem;
+    }
+    
+    .question {
+        font-size: 1.1rem;
+    }
+    
+    .option {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    
+    #question-container {
+        padding: 20px;
+    }
+    
+    #feedback, #explanation {
+        font-size: 0.95rem;
+    }
+    
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -522,6 +568,54 @@ body {
     
     .quiz-settings {
         gap: 12px;
+    }
+    
+    .quiz-container {
+        padding: 20px 15px;
+    }
+    
+    .category-card {
+        min-height: 120px;
+        padding: 15px;
+    }
+    
+    .category-icon {
+        padding: 10px;
+    }
+    
+    .category-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .category-content h3 {
+        font-size: 1rem;
+    }
+    
+    .category-content p {
+        font-size: 0.8rem;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .question {
+        font-size: 1rem;
+    }
+    
+    .option {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        width: 100%;
     }
 }
 
