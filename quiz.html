@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychiatry Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-wrapper">
+        <div class="quiz-container">
+            <div class="header">
+                <a href="index.html" class="back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                    Back
+                </a>
+                <h1 id="category-title">Psychiatry Quiz</h1>
+            </div>
+            <div class="quiz-controls">
+                <div id="score">Score: 0/0</div>
+                <div class="timer-toggle">
+                    <label for="timed-mode">
+                        <input type="checkbox" id="timed-mode"> 
+                        <span>Timed Mode</span>
+                    </label>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-correct"></div>
+                    <div class="progress-incorrect"></div>
+                </div>
+            </div>
+            <div id="timer" class="timer"></div>
+            <div id="question-container">
+                <div id="question" class="question">Loading question...</div>
+                <div id="options" class="options"></div>
+            </div>
+            <div id="feedback"></div>
+            <div id="explanation"></div>
+            <div class="controls">
+                <button id="reset-btn" class="btn btn-secondary">Reset Quiz</button>
+                <button id="next-btn" class="btn btn-primary">Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="quiz.js"></script>
+</body>
+</html>
