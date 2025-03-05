@@ -1,18 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the question bank
-    new PsychiatryQuestionBank();
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'affective-disorders';
+    const difficulties = urlParams.get('difficulties') ? urlParams.get('difficulties').split(',') : ['easy', 'medium', 'hard'];
+    const timedMode = urlParams.get('timed') === 'true';
+
+    // Initialize the question bank with parameters
+    new PsychiatryQuestionBank(category, difficulties, timedMode);
 });
 
 class PsychiatryQuestionBank {
-    constructor() {
+    constructor(category, difficulties, timedMode) {
         // Default settings
-        this.category = 'affective-disorders';
+        this.category = category;
         this.difficultiesFilter = {
-            easy: true,
-            medium: true,
-            hard: true
+            easy: difficulties.includes('easy'),
+            medium: difficulties.includes('medium'),
+            hard: difficulties.includes('hard')
         };
-        this.timedMode = false;
+        this.timedMode = timedMode;
         
         // Quiz state tracking
         this.currentQuestionIndex = 0;
@@ -33,7 +39,6 @@ class PsychiatryQuestionBank {
         this.explanationEl = document.getElementById('explanation');
         this.scoreEl = document.getElementById('score');
         this.nextBtn = document.getElementById('next-btn');
-        this.resetBtn = document.getElementById('reset-btn');
         this.timerEl = document.getElementById('timer');
 
         // Progress bar elements
@@ -59,7 +64,6 @@ class PsychiatryQuestionBank {
 
     initEventListeners() {
         this.nextBtn.addEventListener('click', () => this.loadQuestion());
-        this.resetBtn.addEventListener('click', () => this.resetQuiz());
     }
 
     startTimer() {
@@ -224,33 +228,6 @@ class PsychiatryQuestionBank {
 
         this.progressCorrectEl.style.width = `${correctPercentage}%`;
         this.progressIncorrectEl.style.width = `${incorrectPercentage}%`;
-    }
-
-    resetQuiz() {
-        // Reset quiz state
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.totalQuestions = 0;
-        this.correctQuestions = 0;
-        this.incorrectQuestions = 0;
-        this.skippedQuestions = [];
-        
-        // Reset UI
-        this.scoreEl.textContent = 'Punktzahl: 0/0';
-        this.feedbackEl.style.display = 'none';
-        this.explanationEl.style.display = 'none';
-        this.nextBtn.style.display = 'block';
-        
-        // Reset progress bar
-        this.progressCorrectEl.style.width = '0%';
-        this.progressIncorrectEl.style.width = '0%';
-        
-        // Stop timer if running
-        this.stopTimer();
-        
-        // Reload questions
-        this.filterQuestions();
-        this.loadQuestion();
     }
 
     shuffleArray(array) {
