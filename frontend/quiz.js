@@ -42,6 +42,11 @@ class PsychiatryQuestionBank {
         this.skippedQuestions = [];
         this.questions = [];
         
+        // Timer settings
+        this.timerDuration = 20; // 20 seconds per question
+        this.timeLeft = this.timerDuration;
+        this.timerInterval = null;
+        
         // Initialize event listeners
         this.initEventListeners();
         
@@ -136,23 +141,29 @@ class PsychiatryQuestionBank {
         // Clear any existing timer
         this.stopTimer();
 
-        // Set initial time
-        let timeLeft = this.timerDuration;
-        this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
-        this.timerEl.style.display = 'block';
-        this.timerEl.classList.remove('warning');
+        // Reset time
+        this.timeLeft = this.timerDuration;
+        
+        if (this.elements.timer) {
+            this.elements.timer.textContent = `Verbleibende Zeit: ${this.timeLeft}s`;
+            this.elements.timer.style.display = 'block';
+            this.elements.timer.classList.remove('warning');
+        }
 
         // Start countdown
         this.timerInterval = setInterval(() => {
-            timeLeft--;
-            this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
+            this.timeLeft--;
             
-            // Add warning class when time is running low (less than 5 seconds)
-            if (timeLeft <= 5) {
-                this.timerEl.classList.add('warning');
+            if (this.elements.timer) {
+                this.elements.timer.textContent = `Verbleibende Zeit: ${this.timeLeft}s`;
+                
+                // Add warning class when time is running low (less than 5 seconds)
+                if (this.timeLeft <= 5) {
+                    this.elements.timer.classList.add('warning');
+                }
             }
 
-            if (timeLeft <= 0) {
+            if (this.timeLeft <= 0) {
                 this.handleTimeOut();
             }
         }, 1000);
@@ -161,31 +172,41 @@ class PsychiatryQuestionBank {
     stopTimer() {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
-            this.timerEl.style.display = 'none';
-            this.timerEl.classList.remove('warning');
+            this.timerInterval = null;
         }
     }
 
     handleTimeOut() {
         this.stopTimer();
         
-        // Mark all options as disabled
-        const optionElements = this.elements.options.querySelectorAll('.option');
-        optionElements.forEach(option => {
-            option.style.pointerEvents = 'none';
-            option.style.opacity = '0.7';
-        });
+        // Disable all options
+        const options = this.elements.options.querySelectorAll('.option');
+        options.forEach(opt => opt.style.pointerEvents = 'none');
         
         // Show feedback
-        this.elements.feedback.textContent = 'Zeit abgelaufen! Bitte versuchen Sie es mit der nächsten Frage.';
-        this.elements.feedback.style.color = '#e74c3c';
-        this.elements.feedback.style.display = 'block';
+        if (this.elements.feedback) {
+            this.elements.feedback.textContent = 'Zeit abgelaufen!';
+            this.elements.feedback.style.color = '#e74c3c';
+            this.elements.feedback.style.display = 'block';
+        }
+        
+        // Show correct answer
+        const question = this.questions[this.currentQuestionIndex];
+        options.forEach(opt => {
+            const optionData = Array.from(question.options).find(o => o.text === opt.textContent);
+            if (optionData && optionData.is_correct) {
+                opt.classList.add('correct');
+            }
+        });
         
         // Update score
         this.incorrectQuestions++;
-        this.totalQuestions++;
         this.updateProgressBar();
-        this.elements.score.textContent = `Punktzahl: ${this.score}/${this.totalQuestions}`;
+        
+        // Enable next button
+        if (this.elements.nextBtn) {
+            this.elements.nextBtn.disabled = false;
+        }
     }
 
     loadQuestion() {
@@ -195,12 +216,11 @@ class PsychiatryQuestionBank {
         }
 
         const question = this.questions[this.currentQuestionIndex];
-        console.log('Loading question:', question);
         
         // Update question text
         this.elements.question.textContent = question.question_text;
         
-        // Clear previous options and enable clicking
+        // Clear previous options
         this.elements.options.innerHTML = '';
         
         // Add new options
@@ -209,13 +229,10 @@ class PsychiatryQuestionBank {
                 const optionEl = document.createElement('div');
                 optionEl.className = 'option';
                 optionEl.textContent = option.text;
-                optionEl.style.pointerEvents = 'auto'; // Make sure options are clickable
+                optionEl.style.pointerEvents = 'auto';
                 optionEl.addEventListener('click', () => this.selectOption(optionEl, option));
                 this.elements.options.appendChild(optionEl);
             });
-        } else {
-            console.error('Invalid options for question:', question);
-            this.elements.options.innerHTML = '<div class="error">Error loading question options</div>';
         }
 
         // Clear previous feedback and explanation
@@ -224,6 +241,11 @@ class PsychiatryQuestionBank {
         }
         if (this.elements.explanation) {
             this.elements.explanation.style.display = 'none';
+        }
+
+        // Start timer if in timed mode
+        if (this.timedMode) {
+            this.startTimer();
         }
 
         // Update progress
@@ -239,6 +261,9 @@ class PsychiatryQuestionBank {
     }
 
     selectOption(optionEl, option) {
+        // Stop timer when option is selected
+        this.stopTimer();
+
         // Prevent selecting option if already selected
         if (optionEl.classList.contains('selected') || 
             optionEl.classList.contains('correct') || 
@@ -334,13 +359,16 @@ class PsychiatryQuestionBank {
 
     handleQuizComplete() {
         if (this.elements.container) {
-            this.elements.container.innerHTML = `
-                <div class="quiz-complete">
-                    <h2>Quiz abgeschlossen!</h2>
-                    <p>Ihre Endpunktzahl: ${this.score}/${this.totalQuestions}</p>
-                    <p>Richtig beantwortet: ${this.correctQuestions}</p>
-                    <p>Falsch beantwortet: ${this.incorrectQuestions}</p>
-                    <button onclick="window.location.href='index.html'">Zurück zur Übersicht</button>
+            // Replace the entire container content
+            document.body.innerHTML = `
+                <div class="container">
+                    <div class="quiz-complete">
+                        <h2>Quiz abgeschlossen!</h2>
+                        <p>Ihre Endpunktzahl: ${this.score}/${this.totalQuestions}</p>
+                        <p>Richtig beantwortet: ${this.correctQuestions}</p>
+                        <p>Falsch beantwortet: ${this.incorrectQuestions}</p>
+                        <button onclick="window.location.href='index.html'">Zurück zur Übersicht</button>
+                    </div>
                 </div>
             `;
         }
