@@ -74,11 +74,17 @@ class PsychiatryQuestionBank {
         let timeLeft = this.timerDuration;
         this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
         this.timerEl.style.display = 'block';
+        this.timerEl.classList.remove('warning');
 
         // Start countdown
         this.timerInterval = setInterval(() => {
             timeLeft--;
             this.timerEl.textContent = `Verbleibende Zeit: ${timeLeft}s`;
+            
+            // Add warning class when time is running low (less than 5 seconds)
+            if (timeLeft <= 5) {
+                this.timerEl.classList.add('warning');
+            }
 
             if (timeLeft <= 0) {
                 this.handleTimeOut();
@@ -90,6 +96,7 @@ class PsychiatryQuestionBank {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
             this.timerEl.style.display = 'none';
+            this.timerEl.classList.remove('warning');
         }
     }
 

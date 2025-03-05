@@ -325,11 +325,19 @@ body {
 
 .timer {
     text-align: center;
-    font-size: 1.2rem;
-    color: #ff6b6b;
-    margin-bottom: 20px;
-    display: none;
-    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    margin: 10px 0;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    padding: 8px 15px;
+    border-radius: 12px;
+    background-color: rgba(74, 108, 247, 0.1);
+}
+
+.timer.warning {
+    color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.1);
 }
 
 .category-grid {
