@@ -1,37 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize the question bank if we're on the quiz page
-    if (window.location.pathname.includes('quiz.html')) {
-        new PsychiatryQuestionBank();
-    }
+    // Initialize the question bank
+    new PsychiatryQuestionBank();
 });
 
 class PsychiatryQuestionBank {
     constructor() {
-        // Get category, difficulties, and timed mode from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        this.category = urlParams.get('category') || 'affective-disorders';
-        const selectedDifficulties = urlParams.get('difficulties')?.split(',') || ['easy', 'medium', 'hard'];
-        this.timedMode = urlParams.get('timed') === 'true';
-        
-        // Set category title
-        const categoryTitleMap = {
-            'affective-disorders': 'Affektive Störungen',
-            'psychopharmacology': 'Psychopharmakologie',
-            'psychotherapy': 'Psychotherapie',
-            'schizophrenia': 'Schizophrenie & Psychotische Störungen',
-            'anxiety-disorders': 'Angststörungen'
-        };
-        document.getElementById('category-title').textContent = categoryTitleMap[this.category];
-
-        // Set initial difficulty filters based on URL
+        // Default settings
+        this.category = 'affective-disorders';
         this.difficultiesFilter = {
-            easy: selectedDifficulties.includes('easy'),
-            medium: selectedDifficulties.includes('medium'),
-            hard: selectedDifficulties.includes('hard')
+            easy: true,
+            medium: true,
+            hard: true
         };
-
-        // Get questions for this category
-        this.questions = QUESTIONS[this.category] || [];
+        this.timedMode = false;
         
         // Quiz state tracking
         this.currentQuestionIndex = 0;
@@ -39,12 +20,10 @@ class PsychiatryQuestionBank {
         this.totalQuestions = 0;
         this.correctQuestions = 0;
         this.incorrectQuestions = 0;
-
-        // New properties for difficulty and skipping
         this.skippedQuestions = [];
 
         // Timer variables
-        this.timerDuration = 20; // 20 seconds per question
+        this.timerDuration = 20;
         this.timerInterval = null;
 
         // DOM Elements
@@ -61,14 +40,12 @@ class PsychiatryQuestionBank {
         this.progressCorrectEl = document.querySelector('.progress-correct');
         this.progressIncorrectEl = document.querySelector('.progress-incorrect');
 
+        // Get questions
+        this.questions = QUESTIONS[this.category] || [];
+        
         this.initEventListeners();
         this.filterQuestions();
         this.loadQuestion();
-        
-        // Initialize timer based on URL parameter
-        if (this.timedMode) {
-            this.startTimer();
-        }
     }
 
     filterQuestions() {
