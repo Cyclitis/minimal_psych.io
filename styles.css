@@ -58,6 +58,7 @@ body {
 .header {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 0 20px;
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
@@ -73,11 +74,13 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    padding: 0 70px; /* Add space for the home link */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .site-title {
-    font-size: 2.2rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--primary-color);
     margin: 0;
@@ -97,24 +100,6 @@ body {
 
 .site-title:hover {
     opacity: 0.8;
-}
-
-.home-link {
-    font-size: 0.9rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: var(--border-radius);
-    transition: all 0.2s ease;
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.home-link:hover {
-    color: var(--primary-color);
-    background-color: rgba(0, 128, 128, 0.05);
 }
 
 #category-title {
@@ -549,47 +534,12 @@ body {
         padding: 20px;
     }
     
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
-    #category-selection h2 {
-        font-size: 1.5rem;
-    }
-    
-    .question {
-        font-size: 1.1rem;
-    }
-    
-    .option {
-        padding: 12px 15px;
-        font-size: 0.95rem;
-    }
-    
-    #question-container {
-        padding: 20px;
-    }
-    
-    #feedback, #explanation {
-        font-size: 0.95rem;
-    }
-    
-    .btn {
-        padding: 10px 15px;
-        font-size: 0.9rem;
+    .header-left {
+        max-width: 600px;
     }
     
     .site-title {
-        font-size: 1.4rem;
-    }
-    
-    .home-link {
-        font-size: 0.8rem;
-        padding: 6px 12px;
-    }
-    
-    .header-left {
-        padding: 0 60px;
+        font-size: 1.1rem;
     }
 }
 
@@ -634,44 +584,16 @@ body {
         font-size: 0.8rem;
     }
     
-    .header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .question {
-        font-size: 1rem;
-    }
-    
-    .option {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-    }
-    
-    .controls {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .btn {
-        width: 100%;
+    .header-left {
+        max-width: 400px;
     }
     
     .site-title {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
     
     .header {
-        padding: 0 8px;
-    }
-    
-    .home-link {
-        right: 8px;
-        font-size: 0.75rem;
-        padding: 4px 8px;
-    }
-    
-    .header-left {
-        padding: 0 50px;
+        padding: 0 10px;
     }
 }
 
