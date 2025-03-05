@@ -88,6 +88,10 @@ body {
     text-decoration: none;
     display: block;
     transition: opacity 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .site-title:hover {
@@ -573,6 +577,15 @@ body {
         padding: 10px 15px;
         font-size: 0.9rem;
     }
+    
+    .site-title {
+        font-size: 1.4rem;
+    }
+    
+    .home-link {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -636,6 +649,19 @@ body {
     
     .btn {
         width: 100%;
+    }
+    
+    .site-title {
+        font-size: 1.2rem;
+    }
+    
+    .header {
+        padding: 0 12px;
+    }
+    
+    .home-link {
+        font-size: 0.75rem;
+        padding: 4px 8px;
     }
 }
 
