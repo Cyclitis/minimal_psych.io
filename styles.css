@@ -73,6 +73,7 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
+    padding: 0 70px; /* Add space for the home link */
 }
 
 .site-title {
@@ -91,7 +92,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
+    width: 100%;
 }
 
 .site-title:hover {
@@ -586,6 +587,10 @@ body {
         font-size: 0.8rem;
         padding: 6px 12px;
     }
+    
+    .header-left {
+        padding: 0 60px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -652,16 +657,21 @@ body {
     }
     
     .site-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .header {
-        padding: 0 12px;
+        padding: 0 8px;
     }
     
     .home-link {
+        right: 8px;
         font-size: 0.75rem;
         padding: 4px 8px;
+    }
+    
+    .header-left {
+        padding: 0 50px;
     }
 }
 
